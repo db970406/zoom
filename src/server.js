@@ -20,4 +20,8 @@ const PORT = process.env.PORT
 const httpServer = http.createServer(app)
 const wss = new WebSocket.Server({ server: httpServer })
 
+wss.on("connection", (socket) => {
+    console.log(socket)
+})
+
 httpServer.listen(PORT, () => console.log(`Server on ws://localhost:${PORT}`))
