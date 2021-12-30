@@ -21,7 +21,10 @@ const httpServer = http.createServer(app)
 const wss = new WebSocket.Server({ server: httpServer })
 
 wss.on("connection", (socket) => {
-    console.log(socket)
+    console.log("Connected to Browser")
+    socket.on("close", () => console.log("Disconnected from Browser"))
+    socket.on("message", (message) => console.log(`New Message from Browser: ${message}`))
+    socket.send("hello")
 })
 
-httpServer.listen(PORT, () => console.log(`Server on ws://localhost:${PORT}`))
+httpServer.listen(PORT, () => console.log(`Server on http://localhost:${PORT}`))
