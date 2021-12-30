@@ -1,5 +1,7 @@
 import "dotenv/config"
 import express from "express"
+import http from "http"
+import WebSocket from 'ws'
 
 const app = express()
 
@@ -14,4 +16,8 @@ app.get("/*", (req, res) => res.redirect("/"))
 // 어떤 주소로 가든 home으로 보내버린다.
 
 const PORT = process.env.PORT
-app.listen(PORT, () => console.log(`Server on http://localhost:${PORT}`))
+
+const httpServer = http.createServer(app)
+const wss = new WebSocket.Server({ server: httpServer })
+
+httpServer.listen(PORT, () => console.log(`Server on ws://localhost:${PORT}`))
