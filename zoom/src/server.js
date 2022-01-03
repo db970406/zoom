@@ -22,15 +22,13 @@ const httpServer = http.createServer(app)
 const wsServer = SocketIO(httpServer)
 
 wsServer.on("connection", (socket) => {
-    socket.on(
-        "enter_room",
-        (msg, done) => {
-            console.log(msg)
-            setTimeout(() => {
-                done("Hello I'm from backend")
-            }, 3000)
-        }
-    )
+    socket.onAny((room) => {
+        console.log(room)
+    })
+    socket.on("enter_room", (roomName, done) => {
+        console.log(socket.rooms)
+        done()
+    })
 })
 
 httpServer.listen(PORT, () => console.log(`Server on http://localhost:${PORT}`))
