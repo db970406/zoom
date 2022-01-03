@@ -22,12 +22,10 @@ const httpServer = http.createServer(app)
 const wsServer = SocketIO(httpServer)
 
 wsServer.on("connection", (socket) => {
-    socket.onAny((room) => {
-        console.log(room)
-    })
-    socket.on("enter_room", (roomName, done) => {
-        console.log(socket.rooms)
-        done()
+    socket.on("enter_room", (roomName, showRoom) => {
+        socket.join(roomName)
+        showRoom();
+        socket.to(roomName).emit("welcome");
     })
 })
 
