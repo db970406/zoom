@@ -52,11 +52,15 @@ const handleRoomSubmit = (event) => {
 }
 form.addEventListener("submit", handleRoomSubmit)
 
-socket.on("welcome", (nickname) => {
+socket.on("welcome", (nickname, newCount) => {
+    const h3 = room.querySelector("h3")
+    h3.textContent = `Room ${roomName} (${newCount})`
     addMessage(`${nickname} joined!`)
 })
 
-socket.on("bye", (nickname) => {
+socket.on("bye", (nickname, newCount) => {
+    const h3 = room.querySelector("h3")
+    h3.textContent = `Room ${roomName} (${newCount})`
     addMessage(`${nickname} left!`)
 })
 
@@ -65,4 +69,15 @@ socket.on("new_message", addMessage)
 socket.on("new_message",(msg)=>{
     addMessage(msg)
 })
-*/ 
+*/
+
+socket.on("room_change", (rooms) => {
+    const roomList = welcome.querySelector("ul")
+    roomList.innerHTML = ""
+    if (rooms.length === 0) return;
+    rooms.forEach(room => {
+        const li = document.createElement("li")
+        li.textContent = room;
+        roomList.appendChild(li)
+    })
+});
